@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProofSnap — Privacy Policy</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #0A2540; background: #F7F9FC; line-height: 1.7; }
+  .container { max-width: 720px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #0A2540; }
+  h2 { font-size: 20px; font-weight: 700; margin-top: 32px; margin-bottom: 12px; color: #0A2540; }
+  h3 { font-size: 16px; font-weight: 600; margin-top: 20px; margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: #333; }
+  .subtitle { color: #6B7C93; font-size: 14px; margin-bottom: 32px; }
+  .accent { color: #00D4AA; }
+  ul { margin: 8px 0 16px 24px; }
+  li { margin-bottom: 6px; color: #333; }
+  .badge { display: inline-block; background: #00D4AA20; color: #00D4AA; padding: 2px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 24px; }
+  .footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid #E3E8EF; font-size: 13px; color: #6B7C93; }
+  a { color: #00D4AA; }
+  .lang-toggle { position: fixed; top: 16px; right: 16px; display: flex; gap: 4px; }
+  .lang-btn { padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; font-size: 12px; }
+  .lang-btn.active { background: #00D4AA; color: #0A2540; }
+  .lang-btn:not(.active) { background: #E3E8EF; color: #6B7C93; }
+  .he { direction: rtl; text-align: right; }
+  .en { direction: ltr; text-align: left; }
+</style>
+<script>
+function setLang(lang) {
+  document.getElementById('content-en').style.display = lang === 'en' ? 'block' : 'none';
+  document.getElementById('content-he').style.display = lang === 'he' ? 'block' : 'none';
+  document.getElementById('btn-en').className = lang === 'en' ? 'lang-btn active' : 'lang-btn';
+  document.getElementById('btn-he').className = lang === 'he' ? 'lang-btn active' : 'lang-btn';
+  document.documentElement.lang = lang;
+}
+</script>
+</head>
+<body>
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btn-he" onclick="setLang('he')">עב</button>
+</div>
+
+<!-- ENGLISH VERSION -->
+<div class="container en" id="content-en">
+<div class="badge">Last updated: March 13, 2026</div>
+<h1>ProofSnap — Privacy Policy</h1>
+<p class="subtitle">Digital Notary in Your Pocket</p>
+
+<h2>1. Introduction</h2>
+<p>ProofSnap ("we", "our", "the app") is a mobile application that creates tamper-proof photographic evidence using cryptographic hashing, GPS location, and NTP timestamps. Your privacy is especially important to us — because our app handles sensitive evidentiary data.</p>
+
+<h2>2. Information We Collect</h2>
+
+<h3>2.1 Information collected automatically when creating a proof:</h3>
+<ul>
+  <li><strong>Photographs</strong> — Images you capture through the app or that are auto-sealed from your gallery</li>
+  <li><strong>GPS Location</strong> — Precise coordinates at the moment of capture</li>
+  <li><strong>NTP Timestamp</strong> — Verified time from NTP servers</li>
+  <li><strong>Device Information</strong> — Anonymous device model identifier</li>
+  <li><strong>SHA-256 Hash</strong> — Cryptographic fingerprint of the image and metadata</li>
+</ul>
+
+<h3>2.2 Information we do NOT collect:</h3>
+<ul>
+  <li>Name, email, or phone number (in the free tier)</li>
+  <li>Contacts or address book</li>
+  <li>Browsing history</li>
+  <li>Microphone or audio recordings</li>
+  <li>Data from other apps</li>
+  <li>Advertising identifiers</li>
+</ul>
+
+<h2>3. How We Use Information</h2>
+<ul>
+  <li><strong>Proof Creation</strong> — GPS, NTP, and image data are used solely to create cryptographically signed evidence</li>
+  <li><strong>Local Storage</strong> — All proofs are stored locally on your device in an encrypted database</li>
+  <li><strong>Verification Links</strong> — When you share a proof, a unique verification URL is generated</li>
+</ul>
+
+<h2>4. Data Storage and Security</h2>
+<ul>
+  <li>All proof data is stored <strong>locally on your device</strong></li>
+  <li>Images are saved in the app's private directory, not accessible to other apps</li>
+  <li>SHA-256 hashing ensures data integrity</li>
+  <li>We have no access to your proofs unless you share a verification link</li>
+  <li>Local database is encrypted using Hive encrypted storage</li>
+  <li>Pro tier may include optional cloud backup (encrypted)</li>
+</ul>
+
+<h2>5. Data Sharing</h2>
+<p>We do <strong>not</strong> sell, trade, or share your personal data with third parties. Your proof data is shared only when:</p>
+<ul>
+  <li>You explicitly tap "Share Link" or "Share" to send a verification link</li>
+  <li>You generate and share a PDF certificate</li>
+  <li>Required by law or court order</li>
+</ul>
+
+<h2>6. Permissions</h2>
+<p>ProofSnap requests the following device permissions:</p>
+<ul>
+  <li><strong>Camera</strong> — To capture photos for proof creation</li>
+  <li><strong>Location (GPS)</strong> — To stamp precise coordinates on each proof</li>
+  <li><strong>Internet</strong> — To sync NTP time and generate verification links</li>
+  <li><strong>Photo Library / Media Images</strong> — For AUTO mode: to detect and seal new photos from your regular camera</li>
+</ul>
+
+<h2>7. AUTO Mode</h2>
+<p>When AUTO mode is enabled, ProofSnap monitors your device's photo directories (DCIM/Camera, Pictures) for new images. This scanning occurs only while the app is open in the background. We do not upload, transmit, or access your existing photos — we only detect and seal <em>new</em> photos taken after AUTO is activated.</p>
+
+<h2>8. Subscriptions and Payments</h2>
+<p>ProofSnap offers a free tier (10 proofs per month) and a Pro subscription ($19.99/year). All payments are processed through Google Play Billing. We do not collect or store any payment information directly.</p>
+
+<h2>9. Children's Privacy</h2>
+<p>ProofSnap is not intended for children under 13. We do not knowingly collect data from children.</p>
+
+<h2>10. Your Rights</h2>
+<ul>
+  <li><strong>Delete</strong> — You can delete any proof from within the app at any time</li>
+  <li><strong>Export</strong> — You can share/export your proof data via verification links or PDF</li>
+  <li><strong>Uninstall</strong> — Removing the app deletes all locally stored proofs</li>
+</ul>
+
+<h2>11. Changes to This Policy</h2>
+<p>We may update this privacy policy from time to time. Changes will be posted within the app and on this page. Continued use of ProofSnap after changes constitutes acceptance.</p>
+
+<h2>12. Contact</h2>
+<p>For questions about this privacy policy or your data:</p>
+<p>Email: <a href="mailto:legaldan55@gmail.com">legaldan55@gmail.com</a></p>
+
+<div class="footer">
+  <p>© 2026 LegalDan Software. All rights reserved.</p>
+  <p>Developed by Daniel Peretz.</p>
+  <p><a href="index.html">← Back to ProofSnap</a></p>
+</div>
+</div>
+
+<!-- HEBREW VERSION -->
+<div class="container he" id="content-he" style="display:none;">
+<div class="badge">עדכון אחרון: 13 במרץ 2026</div>
+<h1>ProofSnap — מדיניות פרטיות</h1>
+<p class="subtitle">נוטריון דיגיטלי בכיס</p>
+
+<h2>1. מבוא</h2>
+<p>ProofSnap ("אנחנו", "שלנו", "האפליקציה") היא אפליקציית מובייל שיוצרת ראיות צילומיות חסינות זיוף באמצעות חתימה קריפטוגרפית, מיקום GPS וחותמות זמן NTP. פרטיותך חשובה לנו במיוחד — כי האפליקציה שלנו מטפלת בנתונים ראייתיים רגישים.</p>
+
+<h2>2. מידע שאנו אוספים</h2>
+
+<h3>2.1 מידע שנאסף אוטומטית בעת יצירת הוכחה:</h3>
+<ul>
+  <li><strong>תצלומים</strong> — תמונות שאתה מצלם דרך האפליקציה או שנחתמות אוטומטית מהגלריה</li>
+  <li><strong>מיקום GPS</strong> — קואורדינטות מדויקות ברגע הצילום</li>
+  <li><strong>חותמת זמן NTP</strong> — זמן מאומת משרתי NTP</li>
+  <li><strong>מידע על המכשיר</strong> — מזהה דגם המכשיר (אנונימי)</li>
+  <li><strong>חתימת SHA-256</strong> — טביעת אצבע קריפטוגרפית של התמונה והמטא-דאטה</li>
+</ul>
+
+<h3>2.2 מידע שאנחנו לא אוספים:</h3>
+<ul>
+  <li>שם, אימייל או מספר טלפון (בגרסה החינמית)</li>
+  <li>אנשי קשר או ספר כתובות</li>
+  <li>היסטוריית גלישה</li>
+  <li>מיקרופון או הקלטות שמע</li>
+  <li>מידע מאפליקציות אחרות</li>
+  <li>מזהי פרסום</li>
+</ul>
+
+<h2>3. כיצד אנו משתמשים במידע</h2>
+<ul>
+  <li><strong>יצירת הוכחה</strong> — GPS, NTP ונתוני התמונה משמשים אך ורק ליצירת ראייה חתומה קריפטוגרפית</li>
+  <li><strong>אחסון מקומי</strong> — כל ההוכחות נשמרות מקומית במכשיר שלך בבסיס נתונים מוצפן</li>
+  <li><strong>קישורי אימות</strong> — כשאתה משתף הוכחה, נוצר URL אימות ייחודי</li>
+</ul>
+
+<h2>4. אחסון ואבטחת מידע</h2>
+<ul>
+  <li>כל נתוני ההוכחה נשמרים <strong>מקומית במכשיר שלך</strong></li>
+  <li>התמונות נשמרות בתיקייה פרטית של האפליקציה, לא נגישה לאפליקציות אחרות</li>
+  <li>חתימת SHA-256 מבטיחה שלמות הנתונים</li>
+  <li>אין לנו גישה להוכחות שלך אלא אם שיתפת קישור אימות</li>
+  <li>בסיס הנתונים המקומי מוצפן באמצעות Hive encrypted storage</li>
+  <li>מנוי Pro עשוי לכלול גיבוי אופציונלי לענן (מוצפן)</li>
+</ul>
+
+<h2>5. שיתוף מידע</h2>
+<p>אנחנו <strong>לא</strong> מוכרים, סוחרים או משתפים את המידע שלך עם צדדים שלישיים. נתוני ההוכחה שלך משותפים רק כאשר:</p>
+<ul>
+  <li>אתה לוחץ על "שתף קישור" לשליחת קישור אימות</li>
+  <li>אתה מייצר ומשתף תעודת PDF</li>
+  <li>נדרש על פי חוק או צו בית משפט</li>
+</ul>
+
+<h2>6. הרשאות</h2>
+<ul>
+  <li><strong>מצלמה</strong> — לצילום תמונות ליצירת הוכחה</li>
+  <li><strong>מיקום (GPS)</strong> — להטבעת קואורדינטות מדויקות</li>
+  <li><strong>אינטרנט</strong> — לסנכרון זמן NTP ויצירת קישורי אימות</li>
+  <li><strong>ספריית תמונות</strong> — למצב AUTO: זיהוי וחתימת תמונות חדשות</li>
+</ul>
+
+<h2>7. מצב AUTO</h2>
+<p>כשמצב AUTO מופעל, ProofSnap סורק את תיקיות התמונות במכשיר (DCIM/Camera, Pictures) לתמונות חדשות. הסריקה מתבצעת רק כאשר האפליקציה פתוחה ברקע. אנחנו לא מעלים, משדרים או ניגשים לתמונות הקיימות שלך — רק מזהים וחותמים תמונות חדשות.</p>
+
+<h2>8. מינויים ותשלומים</h2>
+<p>ProofSnap מציע גרסה חינמית (10 הוכחות בחודש) ומנוי Pro ($19.99/שנה). כל התשלומים מעובדים דרך Google Play Billing. אנחנו לא אוספים או מאחסנים מידע תשלום באופן ישיר.</p>
+
+<h2>9. פרטיות ילדים</h2>
+<p>ProofSnap אינה מיועדת לילדים מתחת לגיל 13. אנו לא אוספים ביודעין מידע מילדים.</p>
+
+<h2>10. הזכויות שלך</h2>
+<ul>
+  <li><strong>מחיקה</strong> — אתה יכול למחוק כל הוכחה מהאפליקציה בכל עת</li>
+  <li><strong>ייצוא</strong> — אתה יכול לשתף/לייצא נתוני הוכחה דרך קישורי אימות או PDF</li>
+  <li><strong>הסרה</strong> — הסרת האפליקציה מוחקת את כל ההוכחות המאוחסנות מקומית</li>
+</ul>
+
+<h2>11. שינויים במדיניות</h2>
+<p>אנו עשויים לעדכן מדיניות פרטיות זו מעת לעת. שינויים יפורסמו באפליקציה ובדף זה. המשך שימוש ב-ProofSnap לאחר שינויים מהווה הסכמה.</p>
+
+<h2>12. יצירת קשר</h2>
+<p>לשאלות בנוגע למדיניות פרטיות זו או למידע שלך:</p>
+<p>אימייל: <a href="mailto:legaldan55@gmail.com">legaldan55@gmail.com</a></p>
+
+<div class="footer">
+  <p>© 2026 LegalDan Software. כל הזכויות שמורות.</p>
+  <p>פותח על ידי דניאל פרץ.</p>
+  <p><a href="index.html">→ חזרה ל-ProofSnap</a></p>
+</div>
+</div>
+
+</body>
+</html>
