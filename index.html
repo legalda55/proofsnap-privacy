@@ -1,341 +1,921 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProofSnap — Privacy Policy</title>
+<title>ProofSnap — Digital Notary in Your Pocket</title>
+<meta name="description" content="Tamper-proof photo evidence with SHA-256, GPS & NTP timestamp. No editing after capture. Your digital notary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<script>
+function setLang(lang) {
+  document.body.className = lang === 'he' ? 'he' : '';
+  document.getElementById('btn-en').className = lang === 'en' ? 'lang-btn active' : 'lang-btn';
+  document.getElementById('btn-he').className = lang === 'he' ? 'lang-btn active' : 'lang-btn';
+  document.documentElement.lang = lang;
+}
+</script>
 <style>
-  :root {
-    --bg: #0f1923;
-    --card: #1a2632;
-    --accent: #4fd1c5;
-    --text: #e2e8f0;
-    --muted: #8899a6;
-    --border: #2d3e4e;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    padding: 24px 16px 60px;
-  }
-  .container { max-width: 720px; margin: 0 auto; }
-  .lang-btn {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    background: var(--card);
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    z-index: 100;
-    transition: background 0.2s;
-  }
-  .lang-btn:hover { background: var(--accent); color: var(--bg); }
-  .shield {
-    width: 64px; height: 64px;
-    background: rgba(79,209,197,0.15);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin: 40px auto 20px;
-    font-size: 32px;
-  }
-  h1 {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 8px;
-  }
-  .subtitle {
-    text-align: center;
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 40px;
-  }
-  h2 {
-    color: var(--accent);
-    font-size: 18px;
-    font-weight: 700;
-    margin: 32px 0 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  h2 .icon { margin-right: 8px; }
-  p { margin-bottom: 12px; color: var(--text); }
-  ul { margin: 0 0 16px 20px; }
-  li { margin-bottom: 6px; }
-  .yes { color: var(--accent); }
-  .no { color: #fc8181; }
-  .card {
-    background: var(--card);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin: 12px 0;
-  }
-  .contact-box {
-    background: var(--card);
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    margin-top: 24px;
-  }
-  .contact-box a { color: var(--accent); text-decoration: none; font-weight: 700; }
-  .footer {
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-  }
-  [dir="rtl"] h2 .icon { margin-right: 0; margin-left: 8px; }
-  [dir="rtl"] ul { margin: 0 20px 16px 0; }
-  [dir="rtl"] .lang-btn { right: auto; left: 16px; }
+:root {
+  --navy: #0A2540;
+  --navy-light: #0F3460;
+  --accent: #00D4AA;
+  --accent-glow: #00FFD0;
+  --accent-dark: #00B894;
+  --orange: #FF6B35;
+  --surface: #F7F9FC;
+  --card: #FFFFFF;
+  --text: #0A2540;
+  --text-muted: #6B7C93;
+  --danger: #FF4757;
+  --seal-green: #00D4AA;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: var(--navy);
+  overflow-x: hidden;
+}
+
+body.he {
+  direction: rtl;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 4px;
+  background: rgba(10,37,64,0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid rgba(0,212,170,0.3);
+}
+body.he .lang-toggle { right: auto; left: 20px; }
+
+.lang-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+.lang-btn.active {
+  background: var(--accent);
+  color: var(--navy);
+}
+.lang-btn:not(.active) {
+  background: transparent;
+  color: var(--text-muted);
+}
+.lang-btn:hover:not(.active) { color: #fff; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(0,212,170,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,212,170,0.1);
+  border: 1px solid rgba(0,212,170,0.3);
+  border-radius: 100px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 32px;
+  animation: fadeInUp 0.8s ease;
+}
+.hero-badge .dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(40px, 7vw, 80px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.8s ease 0.1s both;
+}
+body.he .hero h1 { font-family: 'Heebo', sans-serif; }
+
+.hero h1 .accent { color: var(--accent); }
+.hero h1 .orange { color: var(--orange); }
+
+.hero-sub {
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: rgba(255,255,255,0.7);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 48px;
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeInUp 0.8s ease 0.3s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: var(--accent);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--accent-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(0,212,170,0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s;
+}
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== TRUST BAR ===== */
+.trust-bar {
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  font-weight: 500;
+}
+.trust-item .icon {
+  font-size: 20px;
+}
+
+/* ===== THE PROBLEM ===== */
+.section {
+  padding: 100px 24px;
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+body.he .section-label { font-family: 'Heebo', sans-serif; letter-spacing: 0; }
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+body.he .section-title { font-family: 'Heebo', sans-serif; }
+
+.section-dark { background: var(--navy); color: #fff; }
+.section-light { background: var(--surface); color: var(--text); }
+.section-white { background: #fff; color: var(--text); }
+
+/* ===== PROBLEM SECTION ===== */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.problem-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.3s;
+}
+.problem-card:hover {
+  border-color: rgba(255,77,87,0.3);
+  background: rgba(255,77,87,0.05);
+}
+
+.problem-card .emoji { font-size: 36px; margin-bottom: 16px; display: block; }
+.problem-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.problem-card p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+}
+
+/* ===== HOW IT WORKS ===== */
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 48px;
+  position: relative;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 32px;
+  padding: 40px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  align-items: start;
+}
+body.he .step { grid-template-columns: 1fr 80px; }
+
+.step-number {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--navy);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+body.he .step-number { font-family: 'Heebo', sans-serif; order: 2; }
+body.he .step-content { order: 1; }
+
+.step-content h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.step-content p {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ===== SEALED = LOCKED ===== */
+.sealed-section {
+  background: linear-gradient(135deg, var(--navy) 0%, #0F3460 100%);
+  text-align: center;
+}
+
+.sealed-box {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 60px 40px;
+  border: 2px solid var(--accent);
+  border-radius: 24px;
+  background: rgba(0,212,170,0.03);
+  position: relative;
+}
+
+.sealed-box::before {
+  content: '🔒';
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  background: var(--navy);
+  padding: 0 20px;
+}
+
+.sealed-box h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+body.he .sealed-box h2 { font-family: 'Heebo', sans-serif; }
+
+.sealed-box p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.8;
+}
+
+.sealed-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.sealed-feat {
+  padding: 20px;
+}
+.sealed-feat .icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.sealed-feat h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.sealed-feat p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ===== USE CASES ===== */
+.usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.usecase-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid #E3E8EF;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.usecase-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,212,170,0.1);
+}
+
+.usecase-card .emoji { font-size: 32px; margin-bottom: 12px; display: block; }
+.usecase-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.usecase-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+/* ===== TECH STACK ===== */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.tech-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+}
+
+.tech-card .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+body.he .tech-card .mono { font-family: 'JetBrains Mono', monospace; direction: ltr; }
+
+.tech-card h4 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.tech-card p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+/* ===== PRICING ===== */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.price-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px;
+  border: 2px solid #E3E8EF;
+  position: relative;
+  transition: all 0.3s;
+}
+.price-card.featured {
+  border-color: var(--accent);
+  transform: scale(1.03);
+}
+.price-card.featured::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 4px 16px;
+  border-radius: 100px;
+}
+
+.price-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.price-amount {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--navy);
+}
+body.he .price-amount { font-family: 'Heebo', sans-serif; }
+.price-amount .period { font-size: 16px; font-weight: 400; color: var(--text-muted); }
+
+.price-features {
+  list-style: none;
+  margin-top: 20px;
+}
+.price-features li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+body.he .price-features li { flex-direction: row-reverse; text-align: right; }
+.price-features li .check { color: var(--accent); font-weight: 700; }
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  padding: 48px 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer a { color: var(--accent); text-decoration: none; }
+.footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 16px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .step { grid-template-columns: 1fr; gap: 16px; }
+  body.he .step { grid-template-columns: 1fr; }
+  .step-number { width: 48px; height: 48px; font-size: 18px; border-radius: 12px; }
+  body.he .step-number { order: 0; }
+  body.he .step-content { order: 0; }
+  .sealed-box { padding: 40px 24px; }
+  .trust-bar { gap: 24px; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .price-card.featured { transform: scale(1); }
+}
+
+/* ===== VISIBILITY ===== */
+.en-only { display: block; }
+.he-only { display: none; }
+body.he .en-only { display: none; }
+body.he .he-only { display: block; }
+
+.en-inline { display: inline; }
+.he-inline { display: none; }
+body.he .en-inline { display: none; }
+body.he .he-inline { display: inline; }
 </style>
 </head>
 <body>
 
-<button class="lang-btn" onclick="toggleLang()">עברית</button>
-
-<div class="container">
-
-<!-- ==================== ENGLISH ==================== -->
-<div id="en">
-  <div class="shield">&#128737;</div>
-  <h1>ProofSnap Privacy Policy</h1>
-  <p class="subtitle">Last updated: March 12, 2026 &middot; LEGALDAN</p>
-
-  <p>ProofSnap ("the App") is a digital notary tool that creates tamper-proof records of photos. Your privacy is fundamental to our design — the App works almost entirely on your device with no cloud accounts or remote storage.</p>
-
-  <!-- Data Collected -->
-  <h2><span class="icon">&#128202;</span>Data We Collect</h2>
-  <p>When you create a proof, the App collects the following data <strong>locally on your device</strong>:</p>
-  <div class="card">
-    <ul>
-      <li><span class="yes">&#10003;</span> <strong>Photo</strong> — the image you capture or select</li>
-      <li><span class="yes">&#10003;</span> <strong>GPS coordinates</strong> — latitude and longitude at time of capture</li>
-      <li><span class="yes">&#10003;</span> <strong>NTP timestamp</strong> — a verified network timestamp from an NTP server</li>
-      <li><span class="yes">&#10003;</span> <strong>SHA-256 hash</strong> — a cryptographic fingerprint of the photo file</li>
-      <li><span class="yes">&#10003;</span> <strong>Device identifier</strong> — an anonymous, app-scoped device ID</li>
-    </ul>
-  </div>
-
-  <!-- Data NOT Collected -->
-  <h2><span class="icon">&#128683;</span>Data We Do NOT Collect</h2>
-  <div class="card">
-    <ul>
-      <li><span class="no">&#10007;</span> Name, email address, or phone number</li>
-      <li><span class="no">&#10007;</span> Contacts or address book</li>
-      <li><span class="no">&#10007;</span> Browsing history or search queries</li>
-      <li><span class="no">&#10007;</span> Advertising IDs or tracking identifiers</li>
-      <li><span class="no">&#10007;</span> Analytics or usage telemetry</li>
-    </ul>
-  </div>
-
-  <!-- How Data Is Used -->
-  <h2><span class="icon">&#9881;</span>How Your Data Is Used</h2>
-  <ul>
-    <li><strong>Proof creation</strong> — combining photo, location, time, and hash into a verifiable proof record</li>
-    <li><strong>Local storage</strong> — saving proofs in encrypted storage on your device</li>
-    <li><strong>Verification links</strong> — when you choose to share a proof, a verification link is generated so others can confirm its authenticity</li>
-  </ul>
-
-  <!-- Storage & Security -->
-  <h2><span class="icon">&#128274;</span>Storage &amp; Security</h2>
-  <ul>
-    <li>All proof data is stored <strong>locally on your device only</strong></li>
-    <li>Data is encrypted using <strong>AES encryption via Hive</strong> with keys stored in the device's secure keystore</li>
-    <li>There is <strong>no cloud storage, no remote database, and no account system</strong></li>
-    <li>Premium status is validated through Google Play Billing and is not stored locally to prevent tampering</li>
-  </ul>
-
-  <!-- Data Sharing -->
-  <h2><span class="icon">&#128257;</span>Data Sharing</h2>
-  <p>ProofSnap does <strong>not</strong> share, sell, or transmit your data to any third party. Data leaves your device <strong>only</strong> when:</p>
-  <ul>
-    <li>You explicitly tap "Share" to send a proof or verification link</li>
-    <li>The App contacts an NTP server to obtain a verified timestamp (no personal data is sent)</li>
-    <li>Google Play Billing processes a subscription purchase (governed by <a href="https://policies.google.com/privacy" style="color:var(--accent)">Google's Privacy Policy</a>)</li>
-  </ul>
-
-  <!-- Permissions -->
-  <h2><span class="icon">&#128272;</span>Permissions</h2>
-  <div class="card">
-    <ul>
-      <li><strong>Camera</strong> — to capture photos for proof creation</li>
-      <li><strong>Location (GPS)</strong> — to record where a proof was captured</li>
-      <li><strong>Internet</strong> — for NTP time verification and Google Play Billing</li>
-      <li><strong>Photo library / storage</strong> — to select existing photos and for AUTO mode monitoring</li>
-    </ul>
-  </div>
-
-  <!-- AUTO Mode -->
-  <h2><span class="icon">&#128260;</span>AUTO Mode</h2>
-  <p>When AUTO mode is enabled, ProofSnap monitors your device's photo directories for new images and automatically creates sealed proofs for them. This happens <strong>entirely on-device</strong>. AUTO mode:</p>
-  <ul>
-    <li>Only watches standard photo directories (DCIM, Pictures, Camera)</li>
-    <li>Requires photo library permission to function</li>
-    <li>Can be toggled on or off at any time from the home screen</li>
-    <li>Does not upload, transmit, or share any photos automatically</li>
-  </ul>
-
-  <!-- Children's Privacy -->
-  <h2><span class="icon">&#128118;</span>Children's Privacy</h2>
-  <p>ProofSnap is not intended for use by children under the age of 13. We do not knowingly collect any personal information from children. If you believe a child under 13 has used the App, please contact us and we will assist with deleting any associated data.</p>
-
-  <!-- User Rights -->
-  <h2><span class="icon">&#9989;</span>Your Rights</h2>
-  <ul>
-    <li><strong>Delete</strong> — you can delete any individual proof at any time from the proof detail screen</li>
-    <li><strong>Export</strong> — you can share/export any proof via the share function</li>
-    <li><strong>Erase all data</strong> — uninstalling the App removes all stored data completely, since everything is local</li>
-    <li><strong>No account required</strong> — there is nothing to "deactivate" because no account exists</li>
-  </ul>
-
-  <!-- Contact -->
-  <h2><span class="icon">&#128231;</span>Contact</h2>
-  <p>For questions about this privacy policy, contact us through the Google Play store listing.</p>
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇺🇸 EN</button>
+  <button class="lang-btn" id="btn-he" onclick="setLang('he')">🇮🇱 עב</button>
 </div>
 
-<!-- ==================== HEBREW ==================== -->
-<div id="he" style="display:none">
-  <div class="shield">&#128737;</div>
-  <h1>ProofSnap — מדיניות פרטיות</h1>
-  <p class="subtitle">עדכון אחרון: 12 במרץ 2026 &middot; LEGALDAN</p>
-
-  <p>ProofSnap ("האפליקציה") היא כלי נוטריון דיגיטלי שיוצר רשומות חסינות-זיוף של תמונות. הפרטיות שלך היא עיקרון מרכזי בעיצוב שלנו — האפליקציה פועלת כמעט כולה על המכשיר שלך, ללא חשבונות ענן או אחסון מרוחק.</p>
-
-  <!-- מידע שנאסף -->
-  <h2><span class="icon">&#128202;</span>מידע שאנחנו אוספים</h2>
-  <p>כאשר אתה יוצר הוכחה, האפליקציה אוספת את המידע הבא <strong>באופן מקומי על המכשיר שלך</strong>:</p>
-  <div class="card">
-    <ul>
-      <li><span class="yes">&#10003;</span> <strong>תמונה</strong> — התמונה שאתה מצלם או בוחר</li>
-      <li><span class="yes">&#10003;</span> <strong>קואורדינטות GPS</strong> — קו רוחב ואורך בזמן הצילום</li>
-      <li><span class="yes">&#10003;</span> <strong>חותמת זמן NTP</strong> — חותמת זמן מאומתת משרת NTP</li>
-      <li><span class="yes">&#10003;</span> <strong>גיבוב SHA-256</strong> — טביעת אצבע קריפטוגרפית של קובץ התמונה</li>
-      <li><span class="yes">&#10003;</span> <strong>מזהה מכשיר</strong> — מזהה אנונימי ברמת האפליקציה</li>
-    </ul>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    <span class="en-inline">Built by a Lawyer. Trusted by Professionals.</span>
+    <span class="he-inline">נבנה על ידי עורך דין. מהימן על ידי אנשי מקצוע.</span>
   </div>
 
-  <!-- מידע שלא נאסף -->
-  <h2><span class="icon">&#128683;</span>מידע שאנחנו לא אוספים</h2>
-  <div class="card">
-    <ul>
-      <li><span class="no">&#10007;</span> שם, כתובת אימייל או מספר טלפון</li>
-      <li><span class="no">&#10007;</span> אנשי קשר או פנקס כתובות</li>
-      <li><span class="no">&#10007;</span> היסטוריית גלישה או שאילתות חיפוש</li>
-      <li><span class="no">&#10007;</span> מזהי פרסום או עוקבים</li>
-      <li><span class="no">&#10007;</span> אנליטיקס או נתוני שימוש</li>
-    </ul>
+  <h1>
+    <span class="en-only">Your <span class="accent">Digital Notary</span><br>in Your Pocket</span>
+    <span class="he-only"><span class="accent">הנוטריון הדיגיטלי</span><br>שבכיס שלך</span>
+  </h1>
+
+  <p class="hero-sub">
+    <span class="en-only">Take a photo. Get an instant cryptographic seal. <strong style="color:var(--orange)">No editing possible after capture.</strong> Ever.</span>
+    <span class="he-only">צלם תמונה. קבל חתימה קריפטוגרפית מיידית. <strong style="color:var(--orange)">אין אפשרות עריכה לאחר צילום.</strong> אף פעם.</span>
+  </p>
+
+  <div class="hero-cta">
+    <a href="https://play.google.com/store/apps/details?id=com.legaldan.proofsnap" class="btn-primary">
+      <span class="en-inline">▶ Get ProofSnap Free</span>
+      <span class="he-inline">▶ הורד חינם</span>
+    </a>
+    <a href="#how-it-works" class="btn-secondary">
+      <span class="en-inline">How It Works ↓</span>
+      <span class="he-inline">איך זה עובד ↓</span>
+    </a>
   </div>
+</section>
 
-  <!-- כיצד המידע משמש -->
-  <h2><span class="icon">&#9881;</span>כיצד המידע שלך משמש</h2>
-  <ul>
-    <li><strong>יצירת הוכחה</strong> — שילוב תמונה, מיקום, זמן וגיבוב לרשומת הוכחה ניתנת לאימות</li>
-    <li><strong>אחסון מקומי</strong> — שמירת הוכחות באחסון מוצפן על המכשיר שלך</li>
-    <li><strong>קישורי אימות</strong> — כאשר אתה בוחר לשתף הוכחה, נוצר קישור אימות כדי שאחרים יוכלו לאשר את האותנטיות</li>
-  </ul>
-
-  <!-- אחסון ואבטחה -->
-  <h2><span class="icon">&#128274;</span>אחסון ואבטחה</h2>
-  <ul>
-    <li>כל נתוני ההוכחות מאוחסנים <strong>באופן מקומי על המכשיר שלך בלבד</strong></li>
-    <li>הנתונים מוצפנים באמצעות <strong>הצפנת AES דרך Hive</strong> עם מפתחות המאוחסנים במאגר המאובטח של המכשיר</li>
-    <li><strong>אין אחסון ענן, אין מסד נתונים מרוחק ואין מערכת חשבונות</strong></li>
-    <li>סטטוס פרימיום מאומת דרך Google Play Billing ואינו מאוחסן מקומית למניעת פריצה</li>
-  </ul>
-
-  <!-- שיתוף מידע -->
-  <h2><span class="icon">&#128257;</span>שיתוף מידע</h2>
-  <p>ProofSnap <strong>לא</strong> משתפת, מוכרת או מעבירה את המידע שלך לצד שלישי כלשהו. מידע עוזב את המכשיר שלך <strong>רק</strong> כאשר:</p>
-  <ul>
-    <li>אתה לוחץ במפורש על "שתף" כדי לשלוח הוכחה או קישור אימות</li>
-    <li>האפליקציה פונה לשרת NTP לקבלת חותמת זמן מאומתת (לא נשלח מידע אישי)</li>
-    <li>Google Play Billing מעבד רכישת מנוי (בכפוף ל<a href="https://policies.google.com/privacy" style="color:var(--accent)">מדיניות הפרטיות של Google</a>)</li>
-  </ul>
-
-  <!-- הרשאות -->
-  <h2><span class="icon">&#128272;</span>הרשאות</h2>
-  <div class="card">
-    <ul>
-      <li><strong>מצלמה</strong> — לצילום תמונות ליצירת הוכחות</li>
-      <li><strong>מיקום (GPS)</strong> — לרישום היכן הוכחה צולמה</li>
-      <li><strong>אינטרנט</strong> — לאימות זמן NTP ו-Google Play Billing</li>
-      <li><strong>ספריית תמונות / אחסון</strong> — לבחירת תמונות קיימות ולניטור מצב AUTO</li>
-    </ul>
+<!-- ===== TRUST BAR ===== -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="icon">🔐</span> SHA-256</div>
+  <div class="trust-item"><span class="icon">📍</span> GPS</div>
+  <div class="trust-item"><span class="icon">⏱️</span> NTP</div>
+  <div class="trust-item"><span class="icon">📱</span>
+    <span class="en-inline">Works Offline</span>
+    <span class="he-inline">עובד אופליין</span>
   </div>
-
-  <!-- מצב AUTO -->
-  <h2><span class="icon">&#128260;</span>מצב AUTO</h2>
-  <p>כאשר מצב AUTO מופעל, ProofSnap מנטרת את תיקיות התמונות במכשיר ויוצרת באופן אוטומטי הוכחות חתומות לתמונות חדשות. זה מתרחש <strong>כולו על המכשיר</strong>. מצב AUTO:</p>
-  <ul>
-    <li>מנטר רק תיקיות תמונות סטנדרטיות (DCIM, Pictures, Camera)</li>
-    <li>דורש הרשאת ספריית תמונות כדי לפעול</li>
-    <li>ניתן להפעלה וכיבוי בכל עת ממסך הבית</li>
-    <li>לא מעלה, מעביר או משתף תמונות באופן אוטומטי</li>
-  </ul>
-
-  <!-- פרטיות ילדים -->
-  <h2><span class="icon">&#128118;</span>פרטיות ילדים</h2>
-  <p>ProofSnap אינה מיועדת לשימוש ילדים מתחת לגיל 13. אנחנו לא אוספים ביודעין מידע אישי מילדים. אם אתה מאמין שילד מתחת לגיל 13 השתמש באפליקציה, אנא צור איתנו קשר ונסייע במחיקת כל מידע קשור.</p>
-
-  <!-- זכויות המשתמש -->
-  <h2><span class="icon">&#9989;</span>הזכויות שלך</h2>
-  <ul>
-    <li><strong>מחיקה</strong> — ניתן למחוק כל הוכחה בודדת בכל עת ממסך פרטי ההוכחה</li>
-    <li><strong>ייצוא</strong> — ניתן לשתף/לייצא כל הוכחה דרך פונקציית השיתוף</li>
-    <li><strong>מחיקת כל המידע</strong> — הסרת האפליקציה מוחקת את כל המידע המאוחסן לחלוטין, מכיוון שהכל מקומי</li>
-    <li><strong>לא נדרש חשבון</strong> — אין מה "לבטל" כי לא קיים חשבון</li>
-  </ul>
-
-  <!-- יצירת קשר -->
-  <h2><span class="icon">&#128231;</span>יצירת קשר</h2>
-  <p>לשאלות בנוגע למדיניות פרטיות זו, ניתן לפנות אלינו דרך דף האפליקציה בחנות Google Play.</p>
+  <div class="trust-item"><span class="icon">🛡️</span>
+    <span class="en-inline">Encrypted Storage</span>
+    <span class="he-inline">אחסון מוצפן</span>
+  </div>
 </div>
 
-<div class="footer" id="footer-en">&copy; 2026 LEGALDAN. All rights reserved.</div>
-<div class="footer" id="footer-he" style="display:none">&copy; 2026 LEGALDAN. כל הזכויות שמורות.</div>
+<!-- ===== THE PROBLEM ===== -->
+<section class="section section-dark">
+  <div class="section-inner">
+    <span class="section-label">
+      <span class="en-inline">THE PROBLEM</span>
+      <span class="he-inline">הבעיה</span>
+    </span>
+    <h2 class="section-title" style="color:#fff">
+      <span class="en-only">In the Age of Deepfakes,<br><span style="color:var(--danger)">Photos Prove Nothing</span></span>
+      <span class="he-only">בעידן ה-Deepfakes,<br><span style="color:var(--danger)">תמונות לא מוכיחות כלום</span></span>
+    </h2>
 
-</div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="emoji">🏠</span>
+        <h3><span class="en-inline">Moving Into a Rental?</span><span class="he-inline">נכנס לדירה שכורה?</span></h3>
+        <p><span class="en-inline">You photograph the crack in the wall. Months later, the landlord says you caused it. Your photo? Easily dismissed — "could have been edited."</span>
+        <span class="he-inline">צילמת את הסדק בקיר. חודשים אחרי, המשכיר טוען שאתה גרמת לנזק. התמונה שלך? נדחית בקלות — "יכולת לערוך אותה."</span></p>
+      </div>
+      <div class="problem-card">
+        <span class="emoji">🚗</span>
+        <h3><span class="en-inline">Car Accident?</span><span class="he-inline">תאונת דרכים?</span></h3>
+        <p><span class="en-inline">You photograph the damage at the scene. The insurance company questions: when was this really taken? Was it altered? Where's the proof?</span>
+        <span class="he-inline">צילמת את הנזק בזירה. חברת הביטוח שואלת: מתי באמת צולם? האם זה שונה? איפה ההוכחה?</span></p>
+      </div>
+      <div class="problem-card">
+        <span class="emoji">📦</span>
+        <h3><span class="en-inline">Damaged Package?</span><span class="he-inline">חבילה שבורה?</span></h3>
+        <p><span class="en-inline">Your phone's camera has no way to prove the photo wasn't taken yesterday, or edited this morning.</span>
+        <span class="he-inline">למצלמה של הטלפון שלך אין דרך להוכיח שהתמונה לא צולמה אתמול, או נערכה הבוקר.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section section-light" id="how-it-works">
+  <div class="section-inner">
+    <span class="section-label">
+      <span class="en-inline">HOW IT WORKS</span>
+      <span class="he-inline">איך זה עובד</span>
+    </span>
+    <h2 class="section-title">
+      <span class="en-only">Three Seconds to <span style="color:var(--accent)">Tamper-Proof</span> Evidence</span>
+      <span class="he-only">שלוש שניות ל<span style="color:var(--accent)">הוכחה חסינת זיוף</span></span>
+    </h2>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3><span class="en-inline">📸 Capture — Two Ways</span><span class="he-inline">📸 צלם — בשתי דרכים</span></h3>
+          <p><span class="en-inline"><strong>Manual:</strong> Open ProofSnap and take a photo directly.<br><strong>AUTO Mode:</strong> Use your phone's regular camera — ProofSnap automatically detects new photos and seals them instantly. Shoot naturally, get proof automatically.</span>
+          <span class="he-inline"><strong>ידני:</strong> פתח את ProofSnap וצלם ישירות.<br><strong>מצב AUTO:</strong> צלם עם המצלמה הרגילה של הטלפון — ProofSnap מזהה אוטומטית תמונות חדשות וחותם אותן מיידית. צלם בטבעיות, קבל הוכחה אוטומטית.</span></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3><span class="en-inline">🔐 Seal — Instant Cryptographic Lock</span><span class="he-inline">🔐 חתום — נעילה קריפטוגרפית מיידית</span></h3>
+          <p><span class="en-inline">The moment you capture, ProofSnap generates a <strong>SHA-256 hash</strong>, records <strong>GPS coordinates</strong>, and stamps a <strong>verified NTP server time</strong> (not your phone's clock!). All data is encrypted and stored locally.</span>
+          <span class="he-inline">ברגע הצילום, ProofSnap מייצר <strong>Hash SHA-256</strong>, מתעד <strong>קואורדינטות GPS</strong>, וחותם <strong>שעון NTP מאומת</strong> (לא שעון הטלפון!). כל המידע מוצפן ונשמר מקומית.</span></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3><span class="en-inline">🔗 Share — Verification Link</span><span class="he-inline">🔗 שתף — קישור אימות</span></h3>
+          <p><span class="en-inline">Every sealed proof gets a unique verification link. Share it with landlords, insurance companies, courts, or anyone who needs to verify authenticity. Optional: auto-backup to cloud for extra safety.</span>
+          <span class="he-inline">כל הוכחה חתומה מקבלת קישור אימות ייחודי. שתף עם משכירים, חברות ביטוח, בתי משפט, או כל מי שצריך לאמת אותנטיות. אופציונלי: גיבוי אוטומטי לענן לביטחון נוסף.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEALED = LOCKED ===== -->
+<section class="section sealed-section">
+  <div class="section-inner">
+    <div class="sealed-box">
+      <h2>
+        <span class="en-only">Sealed = Locked. Forever.</span>
+        <span class="he-only">חתום = נעול. לתמיד.</span>
+      </h2>
+      <p>
+        <span class="en-only">Once a photo is sealed by ProofSnap, <strong style="color:var(--orange)">it cannot be edited, cropped, filtered, or altered in any way</strong>. The SHA-256 hash acts as a digital fingerprint — if even a single pixel changes, the hash breaks and the proof is invalidated. This is the same technology used by banks and governments.</span>
+        <span class="he-only">ברגע שתמונה נחתמת על ידי ProofSnap, <strong style="color:var(--orange)">אי אפשר לערוך, לחתוך, לסנן או לשנות אותה בשום דרך</strong>. ה-Hash SHA-256 פועל כטביעת אצבע דיגיטלית — אם אפילו פיקסל אחד משתנה, ה-Hash נשבר וההוכחה מבוטלת. זו אותה טכנולוגיה שמשמשת בנקים וממשלות.</span>
+      </p>
+
+      <div class="sealed-features">
+        <div class="sealed-feat">
+          <span class="icon">🔏</span>
+          <h4>SHA-256 Hash</h4>
+          <p><span class="en-inline">Military-grade fingerprint</span><span class="he-inline">טביעת אצבע בדרגה צבאית</span></p>
+        </div>
+        <div class="sealed-feat">
+          <span class="icon">📍</span>
+          <h4>GPS Location</h4>
+          <p><span class="en-inline">Exact coordinates embedded</span><span class="he-inline">קואורדינטות מדויקות משובצות</span></p>
+        </div>
+        <div class="sealed-feat">
+          <span class="icon">⏱️</span>
+          <h4>NTP Timestamp</h4>
+          <p><span class="en-inline">Server-verified, not phone clock</span><span class="he-inline">מאומת משרת, לא שעון הטלפון</span></p>
+        </div>
+        <div class="sealed-feat">
+          <span class="icon">📱</span>
+          <h4>Device ID</h4>
+          <p><span class="en-inline">Hardware fingerprint logged</span><span class="he-inline">טביעת אצבע של המכשיר</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USE CASES ===== -->
+<section class="section section-light">
+  <div class="section-inner">
+    <span class="section-label">
+      <span class="en-inline">USE CASES</span>
+      <span class="he-inline">תרחישי שימוש</span>
+    </span>
+    <h2 class="section-title">
+      <span class="en-only">Who Needs <span style="color:var(--accent)">ProofSnap</span>?</span>
+      <span class="he-only">למי צריך את <span style="color:var(--accent)">ProofSnap</span>?</span>
+    </h2>
+
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <span class="emoji">🏠</span>
+        <h3><span class="en-inline">Renters</span><span class="he-inline">שוכרי דירות</span></h3>
+        <p><span class="en-inline">Document apartment condition before move-in and move-out. Protect your deposit.</span>
+        <span class="he-inline">תעד מצב הדירה לפני כניסה ויציאה. הגן על הפיקדון שלך.</span></p>
+      </div>
+      <div class="usecase-card">
+        <span class="emoji">🚗</span>
+        <h3><span class="en-inline">Drivers</span><span class="he-inline">נהגים</span></h3>
+        <p><span class="en-inline">Accident damage, parking lot scratches — sealed proof at the scene, at the moment.</span>
+        <span class="he-inline">נזקי תאונה, שריטות בחניון — הוכחה חתומה בזירה, ברגע.</span></p>
+      </div>
+      <div class="usecase-card">
+        <span class="emoji">📦</span>
+        <h3><span class="en-inline">Online Shoppers</span><span class="he-inline">קונים באינטרנט</span></h3>
+        <p><span class="en-inline">Package arrived damaged? Sealed proof for shipping company or insurance.</span>
+        <span class="he-inline">חבילה הגיעה פגומה? הוכחה חתומה לחברת השליחויות או ביטוח.</span></p>
+      </div>
+      <div class="usecase-card">
+        <span class="emoji">🏗️</span>
+        <h3><span class="en-inline">Contractors & Clients</span><span class="he-inline">קבלנים ומזמינים</span></h3>
+        <p><span class="en-inline">Document construction progress. Prove work completion date.</span>
+        <span class="he-inline">תעד התקדמות בנייה. הוכח תאריך סיום עבודה.</span></p>
+      </div>
+      <div class="usecase-card">
+        <span class="emoji">🏥</span>
+        <h3><span class="en-inline">Insurance Claims</span><span class="he-inline">תביעות ביטוח</span></h3>
+        <p><span class="en-inline">Before/after documentation that insurance companies can trust.</span>
+        <span class="he-inline">תיעוד לפני/אחרי שחברות ביטוח יכולות לסמוך עליו.</span></p>
+      </div>
+      <div class="usecase-card">
+        <span class="emoji">©️</span>
+        <h3><span class="en-inline">Creators</span><span class="he-inline">יוצרים</span></h3>
+        <p><span class="en-inline">Prove "I created this first" with a timestamped, sealed original.</span>
+        <span class="he-inline">הוכח "אני יצרתי את זה ראשון" עם מקור חתום ומתועד בזמן.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TECHNOLOGY ===== -->
+<section class="section section-dark">
+  <div class="section-inner">
+    <span class="section-label">
+      <span class="en-inline">TECHNOLOGY</span>
+      <span class="he-inline">טכנולוגיה</span>
+    </span>
+    <h2 class="section-title" style="color:#fff">
+      <span class="en-only">What's Under the Hood</span>
+      <span class="he-only">מה מתחת למכסה</span>
+    </h2>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <span class="mono">SHA-256</span>
+        <h4><span class="en-inline">Cryptographic Hash</span><span class="he-inline">Hash קריפטוגרפי</span></h4>
+        <p><span class="en-inline">Same algorithm securing Bitcoin and banking systems. One pixel change = completely different hash.</span>
+        <span class="he-inline">אותו אלגוריתם שמאבטח ביטקוין ומערכות בנקאיות. שינוי פיקסל אחד = Hash שונה לחלוטין.</span></p>
+      </div>
+      <div class="tech-card">
+        <span class="mono">GPS</span>
+        <h4><span class="en-inline">Precise Location</span><span class="he-inline">מיקום מדויק</span></h4>
+        <p><span class="en-inline">Exact coordinates embedded in proof metadata. Proves where the photo was taken.</span>
+        <span class="he-inline">קואורדינטות מדויקות משובצות במטא-דאטה. מוכיח איפה התמונה צולמה.</span></p>
+      </div>
+      <div class="tech-card">
+        <span class="mono">NTP</span>
+        <h4><span class="en-inline">Verified Time</span><span class="he-inline">שעון מאומת</span></h4>
+        <p><span class="en-inline">Timestamp from NTP server — not your phone's easily-manipulated clock.</span>
+        <span class="he-inline">חותמת זמן משרת NTP — לא השעון של הטלפון שקל לתמרן.</span></p>
+      </div>
+      <div class="tech-card">
+        <span class="mono">AES-256</span>
+        <h4><span class="en-inline">Encrypted Storage</span><span class="he-inline">אחסון מוצפן</span></h4>
+        <p><span class="en-inline">All proofs stored in encrypted local database. Your evidence stays on your device.</span>
+        <span class="he-inline">כל ההוכחות נשמרות במסד נתונים מוצפן מקומי. הראיות שלך נשארות על המכשיר.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section section-light" id="pricing">
+  <div class="section-inner">
+    <span class="section-label">
+      <span class="en-inline">PRICING</span>
+      <span class="he-inline">תמחור</span>
+    </span>
+    <h2 class="section-title" style="text-align:center">
+      <span class="en-only">Simple, Honest Pricing</span>
+      <span class="he-only">תמחור פשוט וישר</span>
+    </h2>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="price-amount">$0</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> <span class="en-inline">10 proofs per month</span><span class="he-inline">10 הוכחות בחודש</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">SHA-256 + GPS + NTP</span><span class="he-inline">SHA-256 + GPS + NTP</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">AUTO mode</span><span class="he-inline">מצב AUTO</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">Share verification link</span><span class="he-inline">שיתוף קישור אימות</span></li>
+        </ul>
+      </div>
+
+      <div class="price-card featured" data-label="RECOMMENDED">
+        <h3>Pro</h3>
+        <div class="price-amount">$19.99<span class="period">
+          <span class="en-inline"> / year</span>
+          <span class="he-inline"> / שנה</span>
+        </span></div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> <span class="en-inline">Unlimited proofs</span><span class="he-inline">הוכחות ללא הגבלה</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">No watermark</span><span class="he-inline">ללא סימן מים</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">PDF certificates</span><span class="he-inline">תעודות PDF</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">Cloud auto-backup</span><span class="he-inline">גיבוי אוטומטי לענן</span></li>
+          <li><span class="check">✓</span> <span class="en-inline">Priority support</span><span class="he-inline">תמיכה בעדיפות</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="section section-dark" style="text-align:center">
+  <div class="section-inner">
+    <h2 class="section-title" style="color:#fff">
+      <span class="en-only">Stop Taking Photos.<br>Start Taking <span style="color:var(--accent)">Evidence</span>.</span>
+      <span class="he-only">תפסיק לצלם תמונות.<br>תתחיל לצלם <span style="color:var(--accent)">ראיות</span>.</span>
+    </h2>
+    <p style="color:rgba(255,255,255,0.6); font-size:18px; margin-bottom:32px;">
+      <span class="en-inline">Available now on Google Play. Free to start.</span>
+      <span class="he-inline">זמין עכשיו ב-Google Play. חינם להתחלה.</span>
+    </p>
+    <a href="https://play.google.com/store/apps/details?id=com.legaldan.proofsnap" class="btn-primary" style="font-size:18px; padding:18px 40px;">
+      <span class="en-inline">▶ Download ProofSnap</span>
+      <span class="he-inline">▶ הורד את ProofSnap</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://legalda55.github.io/proofsnap-privacy/">
+      <span class="en-inline">Privacy Policy</span>
+      <span class="he-inline">מדיניות פרטיות</span>
+    </a>
+    <a href="/cdn-cgi/l/email-protection#523e3735333e36333c676712353f333b3e7c313d3f">
+      <span class="en-inline">Contact</span>
+      <span class="he-inline">צור קשר</span>
+    </a>
+  </div>
+  <p>© 2026 LegalDan Software. All rights reserved.</p>
+</footer>
 
 <script>
-  let lang = 'en';
-  function toggleLang() {
-    const btn = document.querySelector('.lang-btn');
-    const enDiv = document.getElementById('en');
-    const heDiv = document.getElementById('he');
-    const footEn = document.getElementById('footer-en');
-    const footHe = document.getElementById('footer-he');
-    if (lang === 'en') {
-      lang = 'he';
-      document.documentElement.lang = 'he';
-      document.documentElement.dir = 'rtl';
-      btn.textContent = 'English';
-      enDiv.style.display = 'none';
-      heDiv.style.display = 'block';
-      footEn.style.display = 'none';
-      footHe.style.display = 'block';
-    } else {
-      lang = 'en';
-      document.documentElement.lang = 'en';
-      document.documentElement.dir = 'ltr';
-      btn.textContent = 'עברית';
-      enDiv.style.display = 'block';
-      heDiv.style.display = 'none';
-      footEn.style.display = 'block';
-      footHe.style.display = 'none';
-    }
-  }
-</script>
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+  });
+});
 
-</body>
-</html>
+// Fade in on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.problem-card, .usecase-card, .tech-card, .price-card, .step').forEach(el => {
+  el.style.op
